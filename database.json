@@ -155,9 +155,9 @@
   "DOCTORS_DB": {
     "Hen phế quản": [
       {
-        "doctor": "Nguyễn Đức H",
+        "doctor": "Nguyễn Đức Hưng",
         "gender": "Nam",
-        "hospital": "Bệnh viện Phổi Trung Ương",
+        "hospital": "Bệnh viện Vinmec Times City",
         "hospital_city": "Hà Nội",
         "department": "Hô Hấp",
         "experience": 16,
@@ -167,9 +167,9 @@
         "time": "08:00-16:00"
       },
       {
-        "doctor": "Trần Thu Y",
+        "doctor": "Trần Thu Yến",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Đà Nẵng",
+        "hospital": "Bệnh viện Vinmec Đà Nẵng",
         "hospital_city": "Đà Nẵng",
         "department": "Hô Hấp",
         "experience": 9,
@@ -179,12 +179,11 @@
         "time": "09:00-17:00"
       }
     ],
-
     "Viêm thanh quản": [
       {
-        "doctor": "Phạm Văn Q",
+        "doctor": "Phạm Văn Quang",
         "gender": "Nam",
-        "hospital": "Bệnh viện Tai Mũi Họng Trung Ương",
+        "hospital": "Bệnh viện Vinmec Smart City",
         "hospital_city": "Hà Nội",
         "department": "Tai Mũi Họng",
         "experience": 13,
@@ -194,9 +193,9 @@
         "time": "07:30-16:00"
       },
       {
-        "doctor": "Lê Thị Z",
+        "doctor": "Lê Thị Zaloan",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Chợ Rẫy",
+        "hospital": "Bệnh viện Vinmec Central Park",
         "hospital_city": "TP.HCM",
         "department": "Tai Mũi Họng",
         "experience": 7,
@@ -206,12 +205,11 @@
         "time": "08:00-15:00"
       }
     ],
-
     "Tiểu đường": [
       {
-        "doctor": "Nguyễn Thị S",
+        "doctor": "Nguyễn Thị Thanh",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Nội Tiết Trung Ương",
+        "hospital": "Bệnh viện Vinmec Metropolis",
         "hospital_city": "Hà Nội",
         "department": "Nội Tiết",
         "experience": 18,
@@ -221,9 +219,9 @@
         "time": "08:00-16:30"
       },
       {
-        "doctor": "Hoàng Văn V",
+        "doctor": "Hoàng Văn Vinh",
         "gender": "Nam",
-        "hospital": "Bệnh viện Đại học Y Dược",
+        "hospital": "Bệnh viện Vinmec Golden River",
         "hospital_city": "TP.HCM",
         "department": "Nội Tiết",
         "experience": 12,
@@ -233,12 +231,11 @@
         "time": "07:30-15:30"
       }
     ],
-
     "Suy giáp": [
       {
-        "doctor": "Bùi Thanh G",
+        "doctor": "Bùi Thanh Giang",
         "gender": "Nam",
-        "hospital": "Bệnh viện Trung Tâm",
+        "hospital": "Bệnh viện Vinmec Riverside",
         "hospital_city": "Hà Nội",
         "department": "Nội Tiết",
         "experience": 10,
@@ -248,12 +245,11 @@
         "time": "08:30-16:30"
       }
     ],
-
     "Viêm đường tiết niệu": [
       {
-        "doctor": "Đặng Quốc M",
+        "doctor": "Đặng Quốc Minh",
         "gender": "Nam",
-        "hospital": "Bệnh viện Việt Đức",
+        "hospital": "Bệnh viện Vinmec Royal City",
         "hospital_city": "Hà Nội",
         "department": "Tiết Niệu",
         "experience": 15,
@@ -263,9 +259,9 @@
         "time": "07:00-15:00"
       },
       {
-        "doctor": "Phan Thị O",
+        "doctor": "Phan Thị Oanh",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Bình Dân",
+        "hospital": "Bệnh viện Vinmec Central Park",
         "hospital_city": "TP.HCM",
         "department": "Tiết Niệu",
         "experience": 11,
@@ -275,12 +271,11 @@
         "time": "08:00-16:00"
       }
     ],
-
     "Sỏi thận": [
       {
-        "doctor": "Lưu Văn N",
+        "doctor": "Lưu Văn Nam",
         "gender": "Nam",
-        "hospital": "Bệnh viện Việt Đức",
+        "hospital": "Bệnh viện Vinmec Royal City",
         "hospital_city": "Hà Nội",
         "department": "Tiết Niệu",
         "experience": 20,
@@ -290,12 +285,11 @@
         "time": "07:00-14:30"
       }
     ],
-
     "Viêm họng": [
       {
-        "doctor": "Nguyễn Văn A",
+        "doctor": "Nguyễn Minh Anh",
         "gender": "Nam",
-        "hospital": "Bệnh viện Hà Nội",
+        "hospital": "Bệnh viện Vinmec Green City",
         "hospital_city": "Hà Nội",
         "department": "Tai Mũi Họng",
         "experience": 10,
@@ -305,9 +299,9 @@
         "time": "08:00-17:00"
       },
       {
-        "doctor": "Phạm Thị H",
+        "doctor": "Phạm Thị Hạnh",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Trung Tâm",
+        "hospital": "Bệnh viện Vinmec Riverside",
         "hospital_city": "Hà Nội",
         "department": "Tai Mũi Họng",
         "experience": 6,
@@ -317,9 +311,9 @@
         "time": "09:00-16:00"
       },
       {
-        "doctor": "Đỗ Minh K",
+        "doctor": "Đỗ Minh Khôi",
         "gender": "Nam",
-        "hospital": "Bệnh viện Đa khoa Miền Bắc",
+        "hospital": "Bệnh viện Vinmec Hải Phòng",
         "hospital_city": "Hải Phòng",
         "department": "Tai Mũi Họng",
         "experience": 14,
@@ -329,12 +323,11 @@
         "time": "07:30-15:30"
       }
     ],
-
     "Cảm cúm": [
       {
-        "doctor": "Hoàng Văn D",
+        "doctor": "Hoàng Văn Duy",
         "gender": "Nam",
-        "hospital": "Bệnh viện Hà Nội",
+        "hospital": "Bệnh viện Vinmec Green City",
         "hospital_city": "Hà Nội",
         "department": "Nội tổng quát",
         "experience": 8,
@@ -344,9 +337,9 @@
         "time": "08:00-16:00"
       },
       {
-        "doctor": "Nguyễn Thị M",
+        "doctor": "Nguyễn Thị Mai",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Sài Gòn",
+        "hospital": "Bệnh viện Vinmec Sài Gòn",
         "hospital_city": "TP.HCM",
         "department": "Nội tổng quát",
         "experience": 12,
@@ -356,9 +349,9 @@
         "time": "07:30-15:30"
       },
       {
-        "doctor": "Lưu Thanh T",
+        "doctor": "Lưu Thanh Tùng",
         "gender": "Nam",
-        "hospital": "Bệnh viện Đà Nẵng",
+        "hospital": "Bệnh viện Vinmec Đà Nẵng",
         "hospital_city": "Đà Nẵng",
         "department": "Nội tổng quát",
         "experience": 5,
@@ -368,12 +361,11 @@
         "time": "10:00-18:00"
       }
     ],
-
     "Viêm xoang": [
       {
-        "doctor": "Bùi Thị X",
+        "doctor": "Bùi Thị Xuân",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Tai Mũi Họng Trung Ương",
+        "hospital": "Bệnh viện Vinmec Smart City",
         "hospital_city": "Hà Nội",
         "department": "Tai Mũi Họng",
         "experience": 11,
@@ -383,9 +375,9 @@
         "time": "08:00-16:30"
       },
       {
-        "doctor": "Trịnh Văn P",
+        "doctor": "Trịnh Văn Phúc",
         "gender": "Nam",
-        "hospital": "Bệnh viện Chợ Rẫy",
+        "hospital": "Bệnh viện Vinmec Central Park",
         "hospital_city": "TP.HCM",
         "department": "Tai Mũi Họng",
         "experience": 18,
@@ -395,12 +387,11 @@
         "time": "07:00-15:00"
       }
     ],
-
     "Viêm dạ dày": [
       {
-        "doctor": "Lê Quốc B",
+        "doctor": "Lê Quốc Bảo",
         "gender": "Nam",
-        "hospital": "Bệnh viện Trung Tâm",
+        "hospital": "Bệnh viện Vinmec Riverside",
         "hospital_city": "Hà Nội",
         "department": "Tiêu Hóa",
         "experience": 14,
@@ -410,9 +401,9 @@
         "time": "08:00-17:00"
       },
       {
-        "doctor": "Mai Thị C",
+        "doctor": "Mai Thị Chi",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Đà Nẵng",
+        "hospital": "Bệnh viện Vinmec Đà Nẵng",
         "hospital_city": "Đà Nẵng",
         "department": "Tiêu Hóa",
         "experience": 9,
@@ -422,9 +413,9 @@
         "time": "08:30-16:30"
       },
       {
-        "doctor": "Nguyễn Hữu E",
+        "doctor": "Nguyễn Hữu Đức",
         "gender": "Nam",
-        "hospital": "Bệnh viện Đại học Y Dược",
+        "hospital": "Bệnh viện Vinmec Golden River",
         "hospital_city": "TP.HCM",
         "department": "Tiêu Hóa",
         "experience": 20,
@@ -434,12 +425,11 @@
         "time": "07:00-14:00"
       }
     ],
-
     "Viêm da": [
       {
-        "doctor": "Trần Thị B",
+        "doctor": "Trần Thu Bình",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Hà Nội",
+        "hospital": "Bệnh viện Vinmec Green City",
         "hospital_city": "Hà Nội",
         "department": "Da Liễu",
         "experience": 7,
@@ -449,9 +439,9 @@
         "time": "08:00-17:00"
       },
       {
-        "doctor": "Đặng Văn K",
+        "doctor": "Đặng Văn Khánh",
         "gender": "Nam",
-        "hospital": "Bệnh viện Sài Gòn",
+        "hospital": "Bệnh viện Vinmec Sài Gòn",
         "hospital_city": "TP.HCM",
         "department": "Da Liễu",
         "experience": 11,
@@ -461,9 +451,9 @@
         "time": "08:30-16:30"
       },
       {
-        "doctor": "Võ Thị Q",
+        "doctor": "Võ Thị Quỳnh",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Da Liễu Trung Ương",
+        "hospital": "Bệnh viện Vinmec Skin Care Center",
         "hospital_city": "Hà Nội",
         "department": "Da Liễu",
         "experience": 16,
@@ -473,12 +463,11 @@
         "time": "07:30-15:30"
       }
     ],
-
     "Tim mạch": [
       {
-        "doctor": "Lê Văn C",
+        "doctor": "Lê Văn Cường",
         "gender": "Nam",
-        "hospital": "Bệnh viện Sài Gòn",
+        "hospital": "Bệnh viện Vinmec Sài Gòn",
         "hospital_city": "TP.HCM",
         "department": "Tim Mạch",
         "experience": 15,
@@ -488,9 +477,9 @@
         "time": "07:30-15:30"
       },
       {
-        "doctor": "Vũ Thị P",
+        "doctor": "Vũ Thị Phương",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Hà Nội",
+        "hospital": "Bệnh viện Vinmec Green City",
         "hospital_city": "Hà Nội",
         "department": "Tim Mạch",
         "experience": 13,
@@ -500,9 +489,9 @@
         "time": "08:00-16:00"
       },
       {
-        "doctor": "Phan Quốc L",
+        "doctor": "Phan Quốc Long",
         "gender": "Nam",
-        "hospital": "Bệnh viện Huế",
+        "hospital": "Bệnh viện Vinmec Huế Heritage",
         "hospital_city": "Huế",
         "department": "Tim Mạch",
         "experience": 22,
@@ -512,12 +501,11 @@
         "time": "06:30-14:30"
       }
     ],
-
     "Migraine": [
       {
-        "doctor": "Ngô Văn T",
+        "doctor": "Ngô Văn Thành",
         "gender": "Nam",
-        "hospital": "Bệnh viện Hà Nội",
+        "hospital": "Bệnh viện Vinmec Green City",
         "hospital_city": "Hà Nội",
         "department": "Thần Kinh",
         "experience": 9,
@@ -527,9 +515,9 @@
         "time": "08:00-15:00"
       },
       {
-        "doctor": "Lý Thị R",
+        "doctor": "Lý Thị Ruby",
         "gender": "Nữ",
-        "hospital": "Bệnh viện Trung Tâm",
+        "hospital": "Bệnh viện Vinmec Riverside",
         "hospital_city": "Hà Nội",
         "department": "Thần Kinh",
         "experience": 8,
@@ -539,9 +527,9 @@
         "time": "09:00-17:00"
       },
       {
-        "doctor": "Đặng Minh U",
+        "doctor": "Đặng Minh Uy",
         "gender": "Nam",
-        "hospital": "Bệnh viện Chợ Rẫy",
+        "hospital": "Bệnh viện Vinmec Central Park",
         "hospital_city": "TP.HCM",
         "department": "Thần Kinh",
         "experience": 17,
