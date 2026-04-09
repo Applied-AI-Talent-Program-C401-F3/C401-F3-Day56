@@ -2,7 +2,7 @@
 
 ## 1. Role
 
-Phụ trách thiết kế dữ liệu, mock database, viết tools và xây agent.
+Phụ trách thiết kế dữ liệu, mock database, hỗ trợ viết tools và xây agent.
 
 ## 2. Đóng góp cụ thể
 
