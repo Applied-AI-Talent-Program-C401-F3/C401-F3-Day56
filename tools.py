@@ -218,9 +218,8 @@ def search_doctors(
             f"- Chuyên khoa: {specialty or 'Bất kỳ'}\n"
             f"- Ngân sách tối đa: {max_price:,}đ\n\n"
             "Gợi ý:\n"
-            "- Thử bỏ lọc giới tính\n"
             "- Tăng ngân sách\n"
-            "- Chọn địa điểm khác"
+            "- Thử lịch hẹn khác"
         )
 
     results.sort(
@@ -238,7 +237,6 @@ def search_doctors(
 
         output.append(
             f"{idx}. {doctor['name']}\n"
-            # f"   🆔 ID: {doctor['id']}\n"
             f"   🏥 Bệnh viện: {doctor['hospital']}\n"
             f"   📍 Thành phố: {doctor['location']}\n"
             f"   🩺 Chuyên khoa: {doctor['specialty']}\n"
@@ -246,6 +244,52 @@ def search_doctors(
             f"   📚 Kinh nghiệm: {doctor['experience']} năm\n"
             f"   💰 Giá khám: {doctor['price_min']:,}đ - {doctor['price_max']:,}đ\n"
             f"   🎯 Phù hợp với: {diseases}\n"
+        )
+
+    return "\n".join(output)
+
+
+# ============================================================================
+# TOOL: BROWSE DOCTORS
+# ============================================================================
+
+@tool
+def browse_doctors() -> str:
+    """
+    Browse all available doctors at Vinmec without filtering by symptom.
+    Useful for follow-up appointments or when users want to see all available doctors.
+
+    Returns:
+    A list of all doctors with their details.
+    """
+
+    if not DOCTORS_DB:
+        return "❌ Không có bác sỹ nào trong hệ thống."
+
+    results = DOCTORS_DB
+
+    results.sort(
+        key=lambda d: (
+            d["location"] != "Hà Nội",
+            d["price_min"],
+            -d["experience"]
+        )
+    )
+
+    output = [f"✅ Danh sách tất cả bác sĩ ({len(results)} bác sĩ):\n"]
+
+    for idx, doctor in enumerate(results, 1):
+        diseases = ", ".join(sorted(doctor["expertise"]))
+
+        output.append(
+            f"{idx}. {doctor['name']}\n"
+            f"   🏥 Bệnh viện: {doctor['hospital']}\n"
+            f"   📍 Thành phố: {doctor['location']}\n"
+            f"   🩺 Chuyên khoa: {doctor['specialty']}\n"
+            f"   👤 Giới tính: {doctor['gender']}\n"
+            f"   📚 Kinh nghiệm: {doctor['experience']} năm\n"
+            f"   💰 Giá khám: {doctor['price_min']:,}đ - {doctor['price_max']:,}đ\n"
+            f"   🎯 Chuyên môn: {diseases}\n"
         )
 
     return "\n".join(output)
@@ -367,4 +411,3 @@ def book_appointment(
         f"💰 Chi phí dự kiến: {doctor['price_min']:,}đ - {doctor['price_max']:,}đ\n\n"
         "💡 Vui lòng đến trước 10 phút và mang CCCD/CMND."
     )
-

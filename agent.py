@@ -10,6 +10,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 
 from tools import (
     search_doctors,
+    browse_doctors,
     check_availability,
     book_appointment,
 )
@@ -36,6 +37,7 @@ class AgentState(TypedDict):
 # =========================
 tools_list = [
     search_doctors,
+    browse_doctors,
     check_availability,
     book_appointment,
 ]
