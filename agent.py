@@ -1,79 +1,141 @@
 from typing import Annotated
 from typing_extensions import TypedDict
-from langgraph.graph import StateGraph, START, END
+
+from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+from langgraph.graph import START, END, StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import SystemMessage
-from tools import search_doctors, check_availability, book_appointment
-from dotenv import load_dotenv
+
+from tools import (
+    search_doctors,
+    check_availability,
+    book_appointment,
+)
 
 load_dotenv()
 
-# 1. Load System Prompt
+
+# =========================
+# Load system prompt
+# =========================
 with open("system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
 
-# 2. Define State
+
+# =========================
+# Graph State
+# =========================
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
 
-# 3. Initialize LLM and Tools
-tools_list = [search_doctors, check_availability, book_appointment]
-llm = ChatOpenAI(model="gpt-4o-mini")
+
+# =========================
+# LLM + Tools
+# =========================
+tools_list = [
+    search_doctors,
+    check_availability,
+    book_appointment,
+]
+
+llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0.2
+)
+
 llm_with_tools = llm.bind_tools(tools_list)
 
-# 4. Agent Node
+
+# =========================
+# Agent Node
+# =========================
 def agent_node(state: AgentState):
     messages = state["messages"]
-    if not isinstance(messages[0], SystemMessage):
+
+    # chỉ thêm system prompt 1 lần đầu
+    if not messages or not isinstance(messages[0], SystemMessage):
         messages = [SystemMessage(content=SYSTEM_PROMPT)] + messages
 
     response = llm_with_tools.invoke(messages)
 
-    # === LOGGING ===
-    if response.tool_calls:
-        for tc in response.tool_calls:
-            print(f"🔧 Calling tool: {tc['name']}({tc['args']})")
+    # Logging để debug tool call
+    if getattr(response, "tool_calls", None):
+        print("Tool Calls:")
+        for tool_call in response.tool_calls:
+            print(
+                f"  - {tool_call['name']}({tool_call['args']})"
+            )
     else:
-        print(f"💬 Direct response")
+        print("💬 Direct Response")
 
     return {"messages": [response]}
 
-# 5. Build Graph
+
+# =========================
+# Build Graph
+# =========================
 builder = StateGraph(AgentState)
+
 builder.add_node("agent", agent_node)
+builder.add_node("tools", ToolNode(tools_list))
 
-tool_node = ToolNode(tools_list)
-builder.add_node("tools", tool_node)
-
-# Define edges
 builder.add_edge(START, "agent")
-builder.add_conditional_edges("agent", tools_condition)
+
+builder.add_conditional_edges(
+    "agent",
+    tools_condition,
+    {
+        "tools": "tools",
+        END: END,
+    },
+)
+
 builder.add_edge("tools", "agent")
 
 graph = builder.compile()
 
-# 6. Chat Loop
+
+# =========================
+# CLI Chat Loop
+# =========================
 if __name__ == "__main__":
     print("=" * 60)
-    print("Vinmec Medical Assistant – Trợ lý Y tế Thông minh")
-    print("    Gõ 'quit' để thoát")
+    print("Vinmec Medical Assistant")
+    print("Gõ 'quit' để thoát")
     print("=" * 60)
 
     conversation_history = []
 
     while True:
-        user_input = input("\nBạn: ").strip()
-        if user_input.lower() in ("quit", "exit", "q"):
+        user_input = input("Bạn: ").strip()
+
+        if user_input.lower() in ["quit", "exit", "q"]:
+            print("Tạm biệt!")
             break
 
-        conversation_history.append(("human", user_input))
-        conversation_history = conversation_history[-10:]  # Keep last 10 messages for context
-        print("\nVinmec Assistant đang xử lý...")
-        result = graph.invoke({"messages": conversation_history})
+        conversation_history.append(HumanMessage(content=user_input))
 
-        final = result["messages"][-1]
-        print(f"\nVinmec Assistant: {final.content}")
+        # chỉ giữ 10 message gần nhất để tránh context quá dài
+        conversation_history = conversation_history[-10:]
 
-        conversation_history = result["messages"] 
+        print("⏳ Assistant đang xử lý...")
+
+        result = graph.invoke(
+            {
+                "messages": conversation_history
+            }
+        )
+
+        final_message = result["messages"][-1]
+
+        print(f"Vinmec Assistant: {final_message.content}")
+
+        # lưu lại toàn bộ message graph trả về
+        # để tool call + tool response vẫn nằm trong history
+        conversation_history = [
+            msg
+            for msg in result["messages"]
+            if not isinstance(msg, SystemMessage)
+        ]
