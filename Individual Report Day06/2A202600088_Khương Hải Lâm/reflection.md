@@ -8,8 +8,8 @@ Trong dự án này, tôi đảm nhận vai trò Kỹ sư Kiến trúc. Trách n
 
 Dưới đây là sự phân tích chuyên sâu về các hạng mục tôi đã thực hiện nhằm biến bản thiết kế kiến trúc thành một hệ thống hoạt động thực tế:
 
-## 1. Cung cấp "Công cụ" cho Agent (Tool Provisioning)
-* **Những gì tôi làm:** Tôi chịu trách nhiệm định nghĩa, xây dựng và cung cấp bộ công cụ (tools) cho LangGraph để AI Agent có thể gọi và sử dụng khi cần thiết.
+## 1. Thiết kế "Công cụ" cho Agent (Tool Provisioning)
+* **Những gì tôi làm:** Tôi chịu trách nhiệm định nghĩa và xây dựng logic cho bộ công cụ (tools) cho LangGraph để AI Agent có thể gọi và sử dụng khi cần thiết.
 * **Phân tích:** Nếu LangGraph là "bộ não" điều hướng logic, thì các công cụ chính là "đôi tay" của hệ thống. Đóng góp này biến một LLM (chỉ biết sinh văn bản) thành một thực thể có khả năng hành động (Agentic AI). Bằng cách chuẩn hóa đầu vào và đầu ra của các công cụ, tôi đảm bảo đồ thị có thể nhận diện chính xác công cụ nào cần được gọi trong từng ngữ cảnh cụ thể.
 
 ## 2. Kiểm soát Luồng và Điều kiện Dừng (Smart Termination Logic)
