@@ -8,7 +8,7 @@ import re
 
 def load_doctors_from_markdown():
     """Load doctor data from database.md"""
-    with open("database.md", "r", encoding="utf-8") as f:
+    with open("database.json", "r", encoding="utf-8") as f:
         content = f.read()
 
     # Extract JSON from markdown code block
