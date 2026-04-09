@@ -238,7 +238,7 @@ def search_doctors(
 
         output.append(
             f"{idx}. {doctor['name']}\n"
-            f"   🆔 ID: {doctor['id']}\n"
+            # f"   🆔 ID: {doctor['id']}\n"
             f"   🏥 Bệnh viện: {doctor['hospital']}\n"
             f"   📍 Thành phố: {doctor['location']}\n"
             f"   🩺 Chuyên khoa: {doctor['specialty']}\n"
