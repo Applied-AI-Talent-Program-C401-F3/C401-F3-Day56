@@ -1,25 +1,38 @@
-# 🏗️ Vai trò: Kỹ sư Kiến trúc (Architecture Developer)
+# Reflection - 2A202600088 Khương Hải Lâm
 
-Trong dự án này, tôi đảm nhận vai trò Kỹ sư Kiến trúc. Trách nhiệm chính của tôi là thiết kế luồng xử lý cốt lõi cho AI Agent bằng cách sử dụng thư viện `langgraph`. Đối với phiên bản demo, đồ thị (graph) được thiết kế theo hướng tinh gọn, sử dụng cấu trúc một vòng lặp (single loop) nhằm đảm bảo tính trực quan, dễ theo dõi và dễ gỡ lỗi.
+## 1) Role cụ thể trong nhóm
+Mình đảm nhận vai trò **Kỹ sư Kiến trúc (Architecture Developer)**: chịu trách nhiệm thiết kế luồng xử lý cốt lõi cho AI Agent bằng thư viện `langgraph`. Đối với phiên bản demo, mình đảm bảo đồ thị (graph) hoạt động trơn tru với cấu trúc một vòng lặp (single loop) tinh gọn, nhằm đảm bảo tính trực quan, dễ theo dõi và dễ gỡ lỗi.
 
----
+## 2) Phần phụ trách cụ thể (2-3 đóng góp có output rõ)
+1. **Thiết kế và cung cấp "Công cụ" cho Agent (Tool Provisioning)**
+   - Output rõ: Định nghĩa logic bộ công cụ (tools) để tích hợp vào LangGraph, chuẩn hóa đầu vào/đầu ra giúp LLM (Agentic AI) có thể nhận diện và gọi chính xác công cụ cần thiết trong từng ngữ cảnh.
+2. **Kiểm soát luồng và điều kiện dừng (Smart Termination Logic)**
+   - Output rõ: Logic code điều hướng chuyển sang node `END` khi Agent đã thu thập đủ thông tin. Điều này giúp ngăn chặn lỗi "vòng lặp vô tận", tối ưu chi phí token (API cost), giảm latency và đảm bảo câu trả lời dứt khoát.
+3. **Xây dựng tài liệu kỹ thuật (Documentation)**
+   - Output rõ: File `README.md` hoàn chỉnh cho dự án, giải thích chi tiết cấu trúc các node/edge, cách cài đặt môi trường và cách kích hoạt luồng chạy demo để dễ dàng bàn giao.
 
-# 🚀 Chi tiết Đóng góp (Contributions & Elaboration)
+## 3) Kiến trúc/Phân luồng phần nào mạnh nhất, phần nào yếu nhất? Vì sao?
+- **Mạnh nhất:** Phần kiểm soát luồng điều kiện dừng (Termination Logic).
+  - Vì cấu trúc single-loop được định nghĩa ranh giới rất rõ, Agent biết chính xác khi nào cần dừng việc gọi tool để trả kết quả cho user, tránh tình trạng kẹt cứng hoặc sinh ra log rác.
+- **Yếu nhất:** Khả năng xử lý lỗi ngoại lệ (Error handling & Fallback) của các công cụ.
+  - Vì tập trung làm luồng demo tinh gọn nhanh nhất có thể, đồ thị hiện tại chưa có các node rẽ nhánh phức tạp để tự động thử lại (retry) hoặc dùng tool dự phòng nếu API của một tool bất ngờ bị sập (downtime).
 
-Dưới đây là sự phân tích chuyên sâu về các hạng mục tôi đã thực hiện nhằm biến bản thiết kế kiến trúc thành một hệ thống hoạt động thực tế:
+## 4) Đóng góp cụ thể khác với mục 2
+- Thiết lập **hàng rào bảo mật (Prompt Injection Guardrails)** thông qua việc tinh chỉnh System Prompt gốc. Qua đó, giúp Agent kiên định với vai trò, tự động từ chối các yêu cầu độc hại/jailbreak từ người dùng mà không làm đứt gãy luồng của LangGraph.
+- Hỗ trợ nhóm debug trực tiếp các node trong quá trình chạy thử để đảm bảo dữ liệu (state) được truyền đi chính xác giữa các bước.
 
-## 1. Thiết kế "Công cụ" cho Agent (Tool Provisioning)
-* **Những gì tôi làm:** Tôi chịu trách nhiệm định nghĩa và xây dựng logic cho bộ công cụ (tools) cho LangGraph để AI Agent có thể gọi và sử dụng khi cần thiết.
-* **Phân tích:** Nếu LangGraph là "bộ não" điều hướng logic, thì các công cụ chính là "đôi tay" của hệ thống. Đóng góp này biến một LLM (chỉ biết sinh văn bản) thành một thực thể có khả năng hành động (Agentic AI). Bằng cách chuẩn hóa đầu vào và đầu ra của các công cụ, tôi đảm bảo đồ thị có thể nhận diện chính xác công cụ nào cần được gọi trong từng ngữ cảnh cụ thể.
+## 5) 1 điều học được trong hackathon mà trước đó chưa biết
+Mình học được cách tư duy quản lý trạng thái (state management) thực tế trong `langgraph`. Việc xây dựng AI Agent không chỉ đơn thuần là gửi prompt và nhận text, mà là thiết kế một "đồ thị trạng thái" nơi dữ liệu, lịch sử gọi tool và quyết định của LLM phải được lưu trữ, luân chuyển nhịp nhàng giữa các node để hệ thống không bị "mất trí nhớ".
 
-## 2. Kiểm soát Luồng và Điều kiện Dừng (Smart Termination Logic)
-* **Những gì tôi làm:** Thiết lập logic kiểm tra: Nếu Agent thu thập đủ thông tin cần thiết từ các công cụ (hoặc từ câu hỏi gốc), vòng lặp sẽ kết thúc (chuyển sang node `END`). Câu trả lời sau đó được tổng hợp và gửi trực tiếp đến người dùng dưới dạng phiên bản hoàn chỉnh cuối cùng.
-* **Phân tích:** Đây là yếu tố sống còn của một hệ thống Agent. Việc thiếu điều kiện dừng tối ưu thường dẫn đến lỗi "vòng lặp vô tận" (Agent liên tục gọi tool một cách kẹt cứng). Thiết kế của tôi giúp hệ thống tiết kiệm chi phí token (API cost), giảm thiểu thời gian chờ đợi (latency) cho người dùng, và đảm bảo câu trả lời đưa ra luôn mạch lạc, dứt khoát chứ không bị cắt xén giữa chừng.
+## 6) Nếu làm lại, đổi gì? (cụ thể)
+Nếu làm lại, mình sẽ:
+1. Thiết kế thêm cơ chế **Human-in-the-loop (HITL)** cho một số tool nhạy cảm, cho phép đồ thị tạm dừng (pause) để chờ người dùng xác nhận trước khi tiếp tục thực thi.
+2. Xây dựng một bộ **Mock Data Tools** (công cụ trả về dữ liệu giả) ngay từ đầu để test luồng graph mượt mà hơn, thay vì phải gọi API thật liên tục gây tốn kém và chậm trễ trong khâu gỡ lỗi.
 
-## 3. Thiết lập Hàng rào Bảo mật (Prompt Injection Guardrails)
-* **Những gì tôi làm:** Xây dựng cơ chế phòng vệ chống lại các rủi ro bảo mật (như Prompt Injection hay Jailbreak) bằng cách thiết kế một System Prompt (Hệ thống Chỉ thị gốc) chặt chẽ và an toàn.
-* **Phân tích:** Người dùng cuối có thể nhập bất cứ thứ gì, kể cả những câu lệnh cố ý đánh lừa AI để phá vỡ quy tắc của ứng dụng. Dưới góc độ kiến trúc, việc nhúng một "vòng bảo vệ" ngay từ lớp System Prompt giúp Agent kiên định với vai trò của mình, tự động từ chối các yêu cầu vi phạm chính sách hoặc nguy hiểm mà không làm sập luồng của LangGraph.
-
-## 4. Xây dựng Tài liệu Kỹ thuật (Documentation / README)
-* **Những gì tôi làm:** Viết và hoàn thiện file `README.md` cho toàn bộ dự án.
-* **Phân tích:** Mã nguồn kiến trúc (như LangGraph) có thể rất trừu tượng đối với người mới tiếp cận. Việc soạn thảo tài liệu rõ ràng giúp giải thích cấu trúc các node/edge, cách cài đặt môi trường, và cách kích hoạt vòng lặp demo. Nó chứng minh tư duy của một lập trình viên chuyên nghiệp: code tốt phải đi kèm với tài liệu tốt để đảm bảo khả năng bàn giao và mở rộng trong tương lai.
+## 7) AI giúp gì? AI sai/mislead ở đâu?
+- **AI giúp:**
+  - Viết nhanh các đoạn boilerplate code để khởi tạo các node và edge cơ bản trong LangGraph.
+  - Hỗ trợ rà soát lỗi cú pháp và format lại file `README.md` từ dàn ý thô sơ thành một tài liệu chuẩn chỉnh, chuyên nghiệp.
+- **AI sai/mislead:**
+  - AI thường xuyên gợi ý code sử dụng các hàm hoặc syntax của phiên bản LangChain/LangGraph cũ (đã deprecated), khiến code bị lỗi khi chạy và mình phải tự tìm đọc document mới nhất để sửa.
+  - Đôi khi AI vẽ ra các cấu trúc đồ thị (multi-agent, nested sub-graphs) quá mức phức tạp so với yêu cầu tinh gọn của dự án, làm mất thời gian nếu cứ đi theo hướng dẫn đó.
