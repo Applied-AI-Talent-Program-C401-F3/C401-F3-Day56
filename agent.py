@@ -69,7 +69,7 @@ if __name__ == "__main__":
             break
 
         conversation_history.append(("human", user_input))
-        conversation_history = conversation_history[-4:]
+        conversation_history = conversation_history[-10:]  # Keep last 10 messages for context
         print("\nVinmec Assistant đang xử lý...")
         result = graph.invoke({"messages": conversation_history})
 

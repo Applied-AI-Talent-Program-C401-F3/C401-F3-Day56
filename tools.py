@@ -1,24 +1,44 @@
 from langchain_core.tools import tool
 import json
-import re
 
 # ===========================================================================
-# LOAD DOCTOR DATABASE FROM database.md
+# LOAD DOCTOR DATABASE FROM database.json
 # ===========================================================================
 
-def load_doctors_from_markdown():
-    """Load doctor data from database.md"""
-    with open("database.md", "r", encoding="utf-8") as f:
-        content = f.read()
+def load_data_from_json():
+    """Load all data from database.json"""
+    with open("database.json", "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    # Extract JSON from markdown code block
-    match = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
-    if match:
-        json_str = match.group(1)
-        return json.loads(json_str)
-    return []
+def load_doctors_from_json():
+    """Load doctor data from database.json"""
+    data = load_data_from_json()
+    doctors_db = data["DOCTORS_DB"]
+    # Flatten the doctors structure from {disease: [doctors]} to [doctors]
+    # and map field names to expected format
+    all_doctors = []
+    for disease, doctors_list in doctors_db.items():
+        for doc in doctors_list:
+            # Map database fields to expected field names
+            mapped_doc = {
+                "name": doc["doctor"],
+                "specialty": doc["department"],
+                "location": doc["hospital_city"],
+                "price_min": doc["consultation_fee_min"],
+                "price_max": doc["consultation_fee_max"],
+                "id": doc.get("id", doc["doctor"].replace(" ", "_")),  # Generate ID if not present
+                "attributes": {
+                    "gender": doc["gender"],
+                    "years_experience": doc["experience"]
+                },
+                "expertise_keywords": [disease.lower()],  # Use disease name as keyword
+                "available_slots": []  # Default empty, can be populated later
+            }
+            all_doctors.append(mapped_doc)
+    return all_doctors
 
-DOCTORS_DB = load_doctors_from_markdown()
+DOCTORS_DB = load_doctors_from_json()
+DATA = load_data_from_json()  # For accessing disease mappings
 
 # ===========================================================================
 # TOOLS
@@ -43,10 +63,20 @@ def search_doctors(symptoms: str, location: str = "", specialty: str = "", max_p
     symptoms_lower = symptoms.lower()
     matches = []
 
+    # Map symptoms to diseases using the disease database
+    diseases_db = DATA.get("DISEASES_DB", {})
+    matched_diseases = set()
+    for symptom_keyword, disease_info in diseases_db.items():
+        if symptom_keyword in symptoms_lower:
+            matched_diseases.add(disease_info["disease"].lower())
+
     # Filter doctors based on criteria
     for doctor in DOCTORS_DB:
-        # Check symptom match via expertise keywords
-        symptom_match = any(keyword in symptoms_lower for keyword in doctor['expertise_keywords'])
+        # Check symptom match via expertise keywords or disease mapping
+        symptom_match = (
+            any(keyword in symptoms_lower for keyword in doctor['expertise_keywords']) or
+            any(keyword in matched_diseases for keyword in doctor['expertise_keywords'])
+        )
 
         # Check location match
         location_match = (not location) or (location.lower() in doctor['location'].lower())
