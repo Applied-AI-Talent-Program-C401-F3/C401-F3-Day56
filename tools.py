@@ -10,15 +10,62 @@ def load_data_from_json():
     with open("database.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
+def generate_available_slots(working_days, time_range):
+    """Generate available appointment slots based on working days and time range"""
+    from datetime import datetime, timedelta
+
+    if not working_days or not time_range:
+        return []
+
+    slots = []
+    start_date = datetime.now()
+
+    # Generate slots for the next 30 days
+    for i in range(30):
+        current_date = start_date + timedelta(days=i)
+        weekday = current_date.weekday() + 1  # Python weekday: 0=Monday, convert to 1=Monday
+
+        # Check if this day is a working day
+        if weekday in working_days:
+            # Parse time range (e.g., "08:00-16:00")
+            try:
+                start_time, end_time = time_range.split('-')
+                start_hour = int(start_time.split(':')[0])
+                end_hour = int(end_time.split(':')[0])
+
+                # Generate 1-hour slots
+                for hour in range(start_hour, end_hour):
+                    slot_time = f"{hour:02d}:00"
+                    date_str = current_date.strftime("%Y-%m-%d")
+                    slots.append(f"{date_str} {slot_time}")
+            except:
+                pass
+
+    return slots
+
 def load_doctors_from_json():
     """Load doctor data from database.json"""
     data = load_data_from_json()
     doctors_db = data["DOCTORS_DB"]
+    day_mapping = data.get("DAY_MAPPING", {})
+
     # Flatten the doctors structure from {disease: [doctors]} to [doctors]
     # and map field names to expected format
     all_doctors = []
+    doctor_counter = 1
+
     for disease, doctors_list in doctors_db.items():
         for doc in doctors_list:
+            # Generate unique ID
+            doctor_id = f"D{doctor_counter:03d}"
+            doctor_counter += 1
+
+            # Generate available slots based on working_days and time
+            available_slots = generate_available_slots(
+                doc.get("working_days", []),
+                doc.get("time", "")
+            )
+
             # Map database fields to expected field names
             mapped_doc = {
                 "name": doc["doctor"],
@@ -26,13 +73,16 @@ def load_doctors_from_json():
                 "location": doc["hospital_city"],
                 "price_min": doc["consultation_fee_min"],
                 "price_max": doc["consultation_fee_max"],
-                "id": doc.get("id", doc["doctor"].replace(" ", "_")),  # Generate ID if not present
+                "id": doctor_id,
                 "attributes": {
                     "gender": doc["gender"],
                     "years_experience": doc["experience"]
                 },
                 "expertise_keywords": [disease.lower()],  # Use disease name as keyword
-                "available_slots": []  # Default empty, can be populated later
+                "available_slots": available_slots,
+                "working_days": doc.get("working_days", []),
+                "time": doc.get("time", ""),
+                "hospital": doc.get("hospital", "")
             }
             all_doctors.append(mapped_doc)
     return all_doctors
