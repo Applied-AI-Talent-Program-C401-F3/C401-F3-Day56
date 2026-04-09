@@ -5,7 +5,7 @@ from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
-from tools import search_doctors, check_availability, book_appointment
+from tools import search_doctors, browse_doctors, check_availability, book_appointment
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,7 +19,7 @@ class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
 
 # 3. Initialize LLM and Tools
-tools_list = [search_doctors, check_availability, book_appointment]
+tools_list = [search_doctors, browse_doctors, check_availability, book_appointment]
 llm = ChatOpenAI(model="gpt-4o-mini")
 llm_with_tools = llm.bind_tools(tools_list)
 

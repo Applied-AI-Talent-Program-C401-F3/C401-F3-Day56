@@ -1,5 +1,6 @@
 from langchain_core.tools import tool
 import json
+from difflib import SequenceMatcher
 
 # ===========================================================================
 # LOAD DOCTOR DATABASE FROM database.json
@@ -91,6 +92,35 @@ DOCTORS_DB = load_doctors_from_json()
 DATA = load_data_from_json()  # For accessing disease mappings
 
 # ===========================================================================
+# FUZZY MATCHING FOR SYMPTOMS
+# ===========================================================================
+
+def fuzzy_match_symptoms(user_symptom, threshold=0.85):
+    """
+    Find matching diseases using fuzzy string matching.
+
+    Parameters:
+    - user_symptom: The symptom string entered by the user
+    - threshold: Similarity threshold (0.0-1.0). Default 0.85 = 85% match
+
+    Returns:
+    Set of matched disease names
+    """
+    diseases_db = DATA.get("DISEASES_DB", {})
+    matched_diseases = set()
+    user_symptom_lower = user_symptom.lower()
+
+    for symptom_keyword in diseases_db.keys():
+        # Calculate similarity ratio
+        similarity = SequenceMatcher(None, user_symptom_lower, symptom_keyword).ratio()
+
+        if similarity >= threshold:
+            disease_info = diseases_db[symptom_keyword]
+            matched_diseases.add(disease_info["disease"].lower())
+
+    return matched_diseases
+
+# ===========================================================================
 # TOOLS
 # ===========================================================================
 
@@ -113,12 +143,8 @@ def search_doctors(symptoms: str, location: str = "", specialty: str = "", max_p
     symptoms_lower = symptoms.lower()
     matches = []
 
-    # Map symptoms to diseases using the disease database
-    diseases_db = DATA.get("DISEASES_DB", {})
-    matched_diseases = set()
-    for symptom_keyword, disease_info in diseases_db.items():
-        if symptom_keyword in symptoms_lower:
-            matched_diseases.add(disease_info["disease"].lower())
+    # Map symptoms to diseases using fuzzy matching
+    matched_diseases = fuzzy_match_symptoms(symptoms_lower, threshold=0.7)
 
     # Filter doctors based on criteria
     for doctor in DOCTORS_DB:
@@ -154,12 +180,45 @@ def search_doctors(symptoms: str, location: str = "", specialty: str = "", max_p
                 matches.append(doctor)
 
     if not matches:
-        return f"❌ Không tìm thấy bác sỹ phù hợp với yêu cầu của bạn (Triệu chứng: {symptoms}, Địa điểm: {location or 'Bất kỳ'}, Chuyên khoa: {specialty or 'Bất kỳ'}).\n\nHãy thử điều chỉnh:\n- Thay đổi địa điểm\n- Tăng ngân sách\n- Chọn chuyên khoa khác"
+        return f"❌ Không tìm thấy bác sỹ phù hợp với yêu cầu của bạn (Triệu chứng: {symptoms}, Địa điểm: {location or 'Bất kỳ'}, Chuyên khoa: {specialty or 'Bất kỳ'}).\n\nHãy thử điều chỉnh:\n- Tăng ngân sách\n- Thử lịch hẹn khác"
 
     # Format results
     result = f"✅ Tìm thấy {len(matches)} bác sỹ phù hợp:\n\n"
 
     for i, doc in enumerate(matches, 1):
+        price_min_formatted = f"{doc['price_min']:,.0f}".replace(",", ".")
+        price_max_formatted = f"{doc['price_max']:,.0f}".replace(",", ".")
+        exp = doc['attributes']['years_experience']
+        gender = doc['attributes']['gender']
+
+        result += f"{i}. {doc['name']}\n"
+        result += f"   🏥 Chuyên khoa: {doc['specialty']}\n"
+        result += f"   👤 Giới tính: {gender}\n"
+        result += f"   📚 Kinh nghiệm: {exp} năm\n"
+        result += f"   💰 Giá khám: {price_min_formatted}đ - {price_max_formatted}đ\n"
+        result += f"   📍 Địa điểm: {doc['location']}\n"
+        result += f"   🆔 ID: {doc['id']}\n\n"
+
+    return result
+
+
+@tool
+def browse_doctors() -> str:
+    """
+    Browse all available doctors at Vinmec without filtering by symptom.
+    Useful for follow-up appointments or when users want to see available doctors.
+
+    Returns:
+    A list of all doctors with their details: name, specialty, experience, price range, location, and availability.
+    """
+
+    if not DOCTORS_DB:
+        return "❌ Không có bác sỹ nào trong hệ thống."
+
+    # Format results
+    result = f"✅ Danh sách tất cả bác sỹ ({len(DOCTORS_DB)} bác sỹ):\n\n"
+
+    for i, doc in enumerate(DOCTORS_DB, 1):
         price_min_formatted = f"{doc['price_min']:,.0f}".replace(",", ".")
         price_max_formatted = f"{doc['price_max']:,.0f}".replace(",", ".")
         exp = doc['attributes']['years_experience']
